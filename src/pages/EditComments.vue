@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md row items-start q-gutter-md">
     <q-card class="my-card">
-        <!-- <p>{{ comments }}</p> -->
+      <!-- <p>{{ comments }}</p> -->
     </q-card>
 
     <div></div>
@@ -15,7 +15,7 @@
       <q-list bordered padding>
         <q-item>
           <q-item-section>
-             <q-item-label class="q-mb-md">
+            <q-item-label class="q-mb-md">
               {{ comment.reference }}
             </q-item-label>
             <q-item-label overline class="text-grey-8">
@@ -41,7 +41,6 @@
           </q-item-section>
 
           <q-item-section side top>
-
             <q-item-label caption>
               {{ comment.email }}
             </q-item-label>
@@ -49,18 +48,15 @@
               <q-btn
                 color="negative"
                 outline
-                stack
-                icon-right="delete"
-                label=""
-                @click="onClick"
+                unelevated
+                icon="delete"
+                @click="deleteComment(comment)"
               />
               <q-btn
+                unelevated
                 color="positive"
-                outline
-                stack
                 icon-right="thumb_up"
-                label=""
-                @click="onClick"
+                @click="commentIsApproved(comment)"
               />
             </div>
           </q-item-section>
@@ -79,7 +75,30 @@ export default {
   name: 'EditComments',
   data () {
     return {
-      comments: ['lklkj']
+      comments: ['']
+    }
+  },
+  methods: {
+    async deleteComment (comment) {
+      if (
+        confirm('Bist Du sicher, dass Du diesen Kommentar löschen möchtest?')
+      ) {
+        try {
+          await db
+            .collection('comments')
+            .doc(comment.id)
+            .delete()
+        } catch (error) {}
+      }
+    },
+    async commentIsApproved (comment) {
+      console.log(comment.id)
+      try {
+        await db
+          .collection('comments')
+          .doc(comment.id)
+          .update({ approved: true })
+      } catch (error) {}
     }
   },
   firestore () {
