@@ -40,6 +40,7 @@
       <q-item-label header class="text-grey-8"> Menü </q-item-label>
 
       <q-list padding>
+
         <q-item clickable to="/" exact v-ripple>
           <q-item-section avatar>
             <q-icon name="flutter_dash" />
@@ -53,6 +54,14 @@
           </q-item-section>
           <q-item-section>Kommentare</q-item-section>
         </q-item>
+
+        <q-item clickable to="/newtext" exact v-ripple>
+          <q-item-section avatar>
+            <q-icon name="grading" />
+          </q-item-section>
+          <q-item-section>Neuer Text</q-item-section>
+        </q-item>
+
       </q-list>
     </q-drawer>
 

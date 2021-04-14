@@ -12,6 +12,13 @@ const routes = [
       { path: '/kommentare', component: () => import('pages/EditComments.vue') }
     ]
   },
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { path: '/newtext', component: () => import('pages/NewText.vue') }
+    ]
+  },
 
   // Always leave this as last one,
   // but you can also remove it

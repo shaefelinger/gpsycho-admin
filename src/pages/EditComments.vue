@@ -1,10 +1,5 @@
 <template>
-  <div class="q-pa-md row items-start q-gutter-md">
-    <q-card class="my-card">
-      <!-- <p>{{ comments }}</p> -->
-    </q-card>
-
-    <div></div>
+  <div class="q-pa-md  row items-start q-gutter-md">
 
     <div
       class="q-pa-md"
@@ -13,6 +8,8 @@
       :key="comment.createtAt"
     >
       <q-list bordered padding>
+
+        <!-- <CommentLayout :comment="comment" @deleteCommentEmit="deleteComment"/> -->
         <q-item>
           <q-item-section>
             <q-item-label class="q-mb-md">
@@ -62,7 +59,6 @@
           </q-item-section>
         </q-item>
 
-        <q-separator spaced />
       </q-list>
     </div>
   </div>
@@ -70,9 +66,13 @@
 
 <script>
 import { db } from '../boot/firebaseBoot'
+// import CommentLayout from 'components/CommentLayout.vue'
 
 export default {
   name: 'EditComments',
+  components: {
+    // CommentLayout
+  },
   data () {
     return {
       comments: ['']
@@ -99,6 +99,18 @@ export default {
           .doc(comment.id)
           .update({ approved: true })
       } catch (error) {}
+    }
+  },
+  computed: {
+    unapprovedComments () {
+      return this.comments.filter((element) => {
+        return element.approved === false
+      })
+    },
+    approvedComments () {
+      return this.comments.filter((element) => {
+        return element.approved === true
+      })
     }
   },
   firestore () {
