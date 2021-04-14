@@ -8,8 +8,8 @@
         v-model="storeArticle.articleTitle"
         label="Titel"
         hint="Titel"
-        lazy-rules
         class="text-h6 text-weight-bold"
+        lazy-rules
         :rules="[val => (val && val.length > 0) || 'Das Feld ist leer!']"
       />
       <q-input
@@ -18,11 +18,11 @@
         v-model="storeArticle.articleTeaserText"
         label="Teaser-Text"
         hint="Teaser-Text"
-        lazy-rules
         type="textarea"
         class="text-subtitle1 text-weight-bold "
         bg-color="grey-1"
         autogrow
+        lazy-rules
         :rules="[val => (val && val.length > 0) || 'Das Feld ist leer!']"
       />
 
@@ -46,14 +46,7 @@
         :toolbar="[['bold', 'italic']]"
         label="Text"
         @paste.native="evt => pasteCapture(evt)"
-        :rules="[val => (val && val.length > 0) || 'Das Feld ist leer!']"
-        lazy-rules
       />
-
-      <!-- <q-editor
-        ref="editor_ref"
-        v-model="editor"
-      /> -->
 
       <q-input
         ref="field4"
