@@ -1,8 +1,9 @@
 <template>
   <div class="q-pa-md q-mx-auto" style="max-width: 800px">
     <!-- {{ storeArticle }} -->
-    <q-form @submit="onSubmit" @reset="confirm = true" class="q-gutter-md">
+    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
       <q-input
+        ref="field1"
         outlined
         v-model="storeArticle.articleTitle"
         label="Titel"
@@ -12,6 +13,7 @@
         :rules="[val => (val && val.length > 0) || 'Das Feld ist leer!']"
       />
       <q-input
+        ref="field2"
         outlined
         v-model="storeArticle.articleTeaserText"
         label="Teaser-Text"
@@ -24,6 +26,7 @@
         :rules="[val => (val && val.length > 0) || 'Das Feld ist leer!']"
       />
       <q-input
+        ref="field3"
         outlined
         v-model="storeArticle.articleContent"
         label="Text"
@@ -60,6 +63,7 @@
       /> -->
 
       <q-input
+        ref="field4"
         filled
         v-model="storeArticle.articleColor"
         :rules="['anyColor']"
@@ -96,7 +100,7 @@
         />
       </div>
 
-      <q-dialog v-model="confirm" persistent>
+      <!-- <q-dialog v-model="confirm" persistent>
         <q-card>
           <q-card-section class="row items-center">
             <q-avatar
@@ -120,7 +124,7 @@
             />
           </q-card-actions>
         </q-card>
-      </q-dialog>
+      </q-dialog> -->
     </q-form>
     <div
       :style="`background-color: ${storeArticle.articleColor};`"
@@ -148,6 +152,12 @@ export default {
     }
   },
   methods: {
+    resetValidation () {
+      this.$refs.field1.resetValidation()
+      this.$refs.field2.resetValidation()
+      this.$refs.field3.resetValidation()
+      this.$refs.field4.resetValidation()
+    },
     async onSubmit () {
       // alert('submit')
       console.log(this.storeArticle)
@@ -159,13 +169,39 @@ export default {
       }
       try {
         await db.collection('Texte').add(newArticle)
+        this.$store.dispatch('firebaseStore/clearNewArticle')
+        this.resetValidation()
+        this.$q.notify({
+          message: 'Text gespeichert',
+          color: 'positive',
+          position: ''
+
+        })
+
+        // this.$router.push('/newtext')
       } catch (err) {
+        alert('Es gab leider einen Fehler...')
         console.log(err)
       }
     },
     onReset () {
-      this.confirm = true
-      this.$store.dispatch('firebaseStore/clearNewArticle')
+      // alert('rest')
+      this.$q
+        .dialog({
+          title: 'Reset',
+          message: 'Willst Du wirklich das komplette Formular zurücksetzen?',
+          cancel: true,
+          persistent: true,
+          transitionShow: 'none',
+          transitionHide: 'none'
+        })
+        .onOk(() => {
+          // console.log('>>>> OK')
+          // this.$q.notify('Task deleted')
+          this.$store.dispatch('firebaseStore/clearNewArticle')
+        })
+      // this.$q.notify('Task deleted')
+      // this.confirm = true
     }
   },
   computed: {
