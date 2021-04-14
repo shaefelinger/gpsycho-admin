@@ -1,7 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+// import VuexPersist from 'vuex-persist'
 
 // import example from './module-example'
+import firebaseStore from './firebaseStore'
+import { vuexfireMutations } from 'vuexfire'
+
+// const vuexLocal = new VuexPersist({
+//   storage: window.localStorage
+// })
 
 Vue.use(Vuex)
 
@@ -17,13 +24,16 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      // example
+      firebaseStore
     },
+    mutations: {
+      ...vuexfireMutations
+    }
+    // plugins: [vuexLocal.plugin],
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEBUGGING
+    // strict: process.env.DEBUGGING
   })
-
   return Store
 }
