@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md q-mx-auto" style="max-width: 800px">
-    <!-- {{ storeArticle }} -->
+    <!-- {{ storeArticle.articleContent }} -->
     <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
       <q-input
         ref="field1"
@@ -25,7 +25,8 @@
         autogrow
         :rules="[val => (val && val.length > 0) || 'Das Feld ist leer!']"
       />
-      <q-input
+
+      <!-- <q-input
         ref="field3"
         outlined
         v-model="storeArticle.articleContent"
@@ -36,30 +37,22 @@
         autogrow
         class="text-body1 "
         :rules="[val => (val && val.length > 0) || 'Das Feld ist leer!']"
-      />
-
-      <!-- <q-input
-        filled
-        v-model="articleTeaserText"
-        label="Teaser Text"
-        lazy-rules
-        :rules="[
-          val => (val !== null && val !== '') || 'Please type your age',
-          val => (val > 0 && val < 100) || 'Please type a real age'
-        ]"
       /> -->
-      <!-- <q-editor
-        :toolbar="[['bold', 'italic']]"
-        v-model="articleTeaserText"
-        min-height="5rem"
-        class="text-body1"
-      />
 
       <q-editor
+        v-model="storeArticle.articleContent"
+        ref="editor_ref"
+        :definitions="{}"
         :toolbar="[['bold', 'italic']]"
-        v-model="articleContent"
-        min-height="10rem"
-        class="text-body2"
+        label="Text"
+        @paste.native="evt => pasteCapture(evt)"
+        :rules="[val => (val && val.length > 0) || 'Das Feld ist leer!']"
+        lazy-rules
+      />
+
+      <!-- <q-editor
+        ref="editor_ref"
+        v-model="editor"
       /> -->
 
       <q-input
@@ -132,7 +125,12 @@
     >
       <h5 class="text-subtitle2 ">{{ storeArticle.articleTitle }}</h5>
       <h5 class="text-weight-bold">{{ storeArticle.articleTeaserText }}</h5>
-      <p class="text-body2">{{ storeArticle.articleContent }}</p>
+      <!-- <v-pre class="text-body2">{{ storeArticle.articleContent }}</v-pre> -->
+      <q-card-section
+        v-html="storeArticle.articleContent"
+        class="q-px-xs"
+        sanitize="true"
+      />
     </div>
   </div>
 </template>
@@ -147,20 +145,39 @@ export default {
       // articleTeaserText: '',
       // articleContent: '',
       // articleColor: '#F89476'
+      editor: 'aha',
 
       confirm: false
     }
   },
   methods: {
+    pasteCapture (evt) {
+      if (evt.target.nodeName === 'INPUT') return
+      let text, onPasteStripFormattingIEPaste
+      evt.preventDefault()
+      if (evt.originalEvent && evt.originalEvent.clipboardData.getData) {
+        text = evt.originalEvent.clipboardData.getData('text/plain')
+        this.$refs.editor_ref.runCmd('insertText', text)
+      } else if (evt.clipboardData && evt.clipboardData.getData) {
+        text = evt.clipboardData.getData('text/plain')
+        this.$refs.editor_ref.runCmd('insertText', text)
+      } else if (window.clipboardData && window.clipboardData.getData) {
+        if (!onPasteStripFormattingIEPaste) {
+          onPasteStripFormattingIEPaste = true
+          this.$refs.editor_ref.runCmd('ms-pasteTextOnly', text)
+        }
+        onPasteStripFormattingIEPaste = false
+      }
+    },
     resetValidation () {
       this.$refs.field1.resetValidation()
       this.$refs.field2.resetValidation()
-      this.$refs.field3.resetValidation()
+      // this.$refs.field3.resetValidation()
       this.$refs.field4.resetValidation()
     },
     async onSubmit () {
       // alert('submit')
-      console.log(this.storeArticle)
+      console.log(typeof this.storeArticle.articleContent)
       const newArticle = {
         title: this.storeArticle.articleTitle,
         teaserText: this.storeArticle.articleTeaserText,
@@ -170,18 +187,15 @@ export default {
       try {
         await db.collection('Texte').add(newArticle)
         this.$store.dispatch('firebaseStore/clearNewArticle')
-        this.resetValidation()
         this.$q.notify({
           message: 'Text gespeichert',
           color: 'positive',
           position: ''
-
         })
-
-        // this.$router.push('/newtext')
+        this.resetValidation()
       } catch (err) {
-        alert('Es gab leider einen Fehler...')
-        console.log(err)
+        alert(err)
+        console.log('💣', err)
       }
     },
     onReset () {
