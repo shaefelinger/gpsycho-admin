@@ -5,17 +5,18 @@
       <q-input
         ref="field1"
         outlined
-        v-model="storeArticle.articleTitle"
+        v-model="articleTitle"
         label="Titel"
         hint="Titel"
         class="text-h6 text-weight-bold"
         lazy-rules
         :rules="[val => (val && val.length > 0) || 'Das Feld ist leer!']"
+        @change="onInputChange"
       />
       <q-input
         ref="field2"
         outlined
-        v-model="storeArticle.articleTeaserText"
+        v-model="articleTeaserText"
         label="Teaser-Text"
         hint="Teaser-Text"
         type="textarea"
@@ -24,6 +25,7 @@
         autogrow
         lazy-rules
         :rules="[val => (val && val.length > 0) || 'Das Feld ist leer!']"
+        @change="onInputChange"
       />
 
       <!-- <q-input
@@ -40,18 +42,21 @@
       /> -->
 
       <q-editor
-        v-model="storeArticle.articleContent"
+        v-model="articleContent"
+        placeholder="Text..."
         ref="editor_ref"
         :definitions="{}"
         :toolbar="[['bold', 'italic']]"
         label="Text"
         @paste.native="evt => pasteCapture(evt)"
+        @change="onInputChange"
       />
 
       <q-input
         ref="field4"
+        @change="onInputChange"
         filled
-        v-model="storeArticle.articleColor"
+        v-model="articleColor"
         :rules="['anyColor']"
         hint="Hintergrundfarbe"
         class="my-input"
@@ -60,7 +65,7 @@
           <q-icon name="colorize" class="cursor-pointer">
             <q-popup-proxy transition-show="scale" transition-hide="scale">
               <q-color
-                v-model="storeArticle.articleColor"
+                v-model="articleColor"
                 default-view="palette"
                 :palette="[
                   '#F89476',
@@ -85,20 +90,15 @@
           class="q-ml-sm"
         />
       </div>
-
     </q-form>
     <div
-      :style="`background-color: ${storeArticle.articleColor};`"
+      :style="`background-color: ${articleColor};`"
       class="q-py-lg q-px-xl q-mt-lg"
     >
-      <h5 class="text-subtitle2 ">{{ storeArticle.articleTitle }}</h5>
-      <h5 class="text-weight-bold">{{ storeArticle.articleTeaserText }}</h5>
-      <!-- <v-pre class="text-body2">{{ storeArticle.articleContent }}</v-pre> -->
-      <q-card-section
-        v-html="storeArticle.articleContent"
-        class="q-px-xs"
-        sanitize="true"
-      />
+      <h5 class="text-subtitle2 ">{{ articleTitle }}</h5>
+      <h5 class="text-weight-bold">{{ articleTeaserText }}</h5>
+      <!-- <v-pre class="text-body2">{{ articleContent }}</v-pre> -->
+      <q-card-section v-html="articleContent" class="q-px-xs" sanitize="true" />
     </div>
   </div>
 </template>
@@ -116,6 +116,17 @@ export default {
     }
   },
   methods: {
+    onInputChange () {
+      // alert('onInputChange')
+      const newArticle = {
+        articleTitle: this.articleTitle,
+        articleTeaserText: this.articleTeaserText,
+        articleContent: this.articleContent,
+        articleColor: this.articleColor
+      }
+
+      localStorage.setItem('localArticle', JSON.stringify(newArticle))
+    },
     pasteCapture (evt) {
       if (evt.target.nodeName === 'INPUT') return
       let text, onPasteStripFormattingIEPaste
@@ -142,12 +153,11 @@ export default {
     },
     async onSubmit () {
       // alert('submit')
-      console.log(typeof this.storeArticle.articleContent)
       const newArticle = {
-        title: this.storeArticle.articleTitle,
-        teaserText: this.storeArticle.articleTeaserText,
-        articleContent: this.storeArticle.articleContent,
-        articleColor: this.storeArticle.articleColor
+        title: this.articleTitle,
+        teaserText: this.articleTeaserText,
+        articleContent: this.articleContent,
+        articleColor: this.articleColor
       }
       try {
         await db.collection('Texte').add(newArticle)
@@ -157,14 +167,20 @@ export default {
           color: 'positive',
           position: ''
         })
+        this.resetFields()
         this.resetValidation()
       } catch (err) {
         alert(err)
         console.log('💣', err)
       }
     },
+    resetFields () {
+      this.articleTitle = ''
+      this.articleTeaserText = ''
+      this.articleContent = ''
+      this.articleColor = '#F89476'
+    },
     onReset () {
-      // alert('rest')
       this.$q
         .dialog({
           title: 'Reset',
@@ -175,12 +191,17 @@ export default {
           transitionHide: 'none'
         })
         .onOk(() => {
+          this.resetFields()
+          // this.articleTitle = "";
+          // this.articleTeaserText = "";
+          // this.articleContent = "";
+          // this.articleColor = "#F89476";
+
+          // localStorage.setItem('localArticle', JSON.stringify({}))
+
           // console.log('>>>> OK')
-          // this.$q.notify('Task deleted')
-          this.$store.dispatch('firebaseStore/clearNewArticle')
+          // this.$store.dispatch('firebaseStore/clearNewArticle')
         })
-      // this.$q.notify('Task deleted')
-      // this.confirm = true
     }
   },
   computed: {
@@ -189,7 +210,38 @@ export default {
       // return this.$store.firebaseStore.getters.getNewArticle
       // return this.$store.getters.getNewArticle
     }
+  },
+  mounted () {
+    const newArticle = JSON.parse(localStorage.getItem('localArticle'))
+    this.articleTitle = newArticle.articleTitle
+    this.articleTeaserText = newArticle.articleTeaserText
+    this.articleContent = newArticle.articleContent
+    this.articleColor = newArticle.articleColor
+  },
+  watch: {
+    articleTitle: function (val) {
+      this.onInputChange()
+    },
+    articleTeaserText: function (val) {
+      this.onInputChange()
+    },
+    articleContent: function (val) {
+      this.onInputChange()
+    },
+    articleColor: function (val) {
+      this.onInputChange()
+    }
   }
+
+  // beforeDestroy: function () {
+  //   const newArticle = {
+  //     title: this.articleTitle,
+  //     teaserText: this.articleTeaserText,
+  //     articleContent: this.articleContent,
+  //     articleColor: this.articleColor
+  //   }
+  //   localStorage.setItem('localArticle', JSON.stringify(newArticle))
+  // }
 }
 </script>
 
