@@ -63,6 +63,7 @@
 </template>
 
 <script>
+
 // import EssentialLink from 'components/EssentialLink.vue'
 
 // const linksData = [
@@ -112,7 +113,7 @@
 
 export default {
   name: 'MainLayout',
-  // components: { EssentialLink },
+  // components: { CommentLayout },
   data () {
     return {
       leftDrawerOpen: false
