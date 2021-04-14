@@ -86,31 +86,6 @@
         />
       </div>
 
-      <!-- <q-dialog v-model="confirm" persistent>
-        <q-card>
-          <q-card-section class="row items-center">
-            <q-avatar
-              icon="signal_wifi_off"
-              color="primary"
-              text-color="white"
-            />
-            <span class="q-ml-sm"
-              >Willst Du wirklich das komplette Formular zurücksetzen?</span
-            >
-          </q-card-section>
-
-          <q-card-actions align="right">
-            <q-btn flat label="Cancel" color="primary" v-close-popup />
-            <q-btn
-              @click="onReset"
-              flat
-              label="Ja"
-              color="primary"
-              v-close-popup
-            />
-          </q-card-actions>
-        </q-card>
-      </q-dialog> -->
     </q-form>
     <div
       :style="`background-color: ${storeArticle.articleColor};`"
@@ -134,13 +109,10 @@ import { db } from '../boot/firebaseBoot'
 export default {
   data () {
     return {
-      // articleTitle: '',
-      // articleTeaserText: '',
-      // articleContent: '',
-      // articleColor: '#F89476'
-      editor: 'aha',
-
-      confirm: false
+      articleTitle: '',
+      articleTeaserText: '',
+      articleContent: '',
+      articleColor: '#F89476'
     }
   },
   methods: {
