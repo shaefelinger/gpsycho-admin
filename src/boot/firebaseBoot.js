@@ -1,4 +1,6 @@
 // import something here
+import Vue from 'vue'
+
 import firebase from 'firebase'
 import 'firebase/firestore'
 
@@ -26,8 +28,8 @@ export { timestamp }
 // export default async (/* { app, router, Vue ... } */) => {
 // }
 
+Vue.use(firestorePlugin)
+
 export default function (Vue) {
   // Set default layout as a global component
-
-  Vue.use(firestorePlugin)
 }
