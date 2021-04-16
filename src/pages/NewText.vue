@@ -11,7 +11,7 @@
         class="text-h6 text-weight-bold"
         lazy-rules
         :rules="[val => (val && val.length > 0) || 'Das Feld ist leer!']"
-        @change="onInputChange"
+        @change="storeArticleInLocalStorage"
       />
       <q-input
         ref="field2"
@@ -25,7 +25,7 @@
         autogrow
         lazy-rules
         :rules="[val => (val && val.length > 0) || 'Das Feld ist leer!']"
-        @change="onInputChange"
+        @change="storeArticleInLocalStorage"
       />
 
       <!-- <q-input
@@ -49,12 +49,12 @@
         :toolbar="[['bold', 'italic']]"
         label="Text"
         @paste.native="evt => pasteCapture(evt)"
-        @change="onInputChange"
+        @change="storeArticleInLocalStorage"
       />
 
       <q-input
         ref="field4"
-        @change="onInputChange"
+        @change="storeArticleInLocalStorage"
         filled
         v-model="articleColor"
         :rules="['anyColor']"
@@ -105,6 +105,7 @@
 
 <script>
 import { db } from '../boot/firebaseBoot'
+import { LocalStorage } from 'quasar'
 
 export default {
   data () {
@@ -116,16 +117,14 @@ export default {
     }
   },
   methods: {
-    onInputChange () {
-      // alert('onInputChange')
+    storeArticleInLocalStorage () {
       const newArticle = {
         articleTitle: this.articleTitle,
         articleTeaserText: this.articleTeaserText,
         articleContent: this.articleContent,
         articleColor: this.articleColor
       }
-
-      localStorage.setItem('localArticle', JSON.stringify(newArticle))
+      LocalStorage.set('localArticle', newArticle)
     },
     pasteCapture (evt) {
       if (evt.target.nodeName === 'INPUT') return
@@ -179,6 +178,7 @@ export default {
       this.articleTeaserText = ''
       this.articleContent = ''
       this.articleColor = '#F89476'
+      this.storeArticleInLocalStorage()
     },
     onReset () {
       this.$q
@@ -192,27 +192,16 @@ export default {
         })
         .onOk(() => {
           this.resetFields()
-          // this.articleTitle = "";
-          // this.articleTeaserText = "";
-          // this.articleContent = "";
-          // this.articleColor = "#F89476";
-
-          // localStorage.setItem('localArticle', JSON.stringify({}))
-
-          // console.log('>>>> OK')
-          // this.$store.dispatch('firebaseStore/clearNewArticle')
         })
     }
   },
-  computed: {
-    storeArticle () {
-      return this.$store.state.firebaseStore.newArticle
-      // return this.$store.firebaseStore.getters.getNewArticle
-      // return this.$store.getters.getNewArticle
-    }
-  },
+  // computed: {
+  //   storeArticle () {
+  //     return this.$store.state.firebaseStore.newArticle
+  //   }
+  // },
   mounted () {
-    const newArticle = JSON.parse(localStorage.getItem('localArticle'))
+    const newArticle = LocalStorage.getItem('localArticle') || this.resetFields()
     this.articleTitle = newArticle.articleTitle
     this.articleTeaserText = newArticle.articleTeaserText
     this.articleContent = newArticle.articleContent
@@ -220,28 +209,18 @@ export default {
   },
   watch: {
     articleTitle: function (val) {
-      this.onInputChange()
+      this.storeArticleInLocalStorage()
     },
     articleTeaserText: function (val) {
-      this.onInputChange()
+      this.storeArticleInLocalStorage()
     },
     articleContent: function (val) {
-      this.onInputChange()
+      this.storeArticleInLocalStorage()
     },
     articleColor: function (val) {
-      this.onInputChange()
+      this.storeArticleInLocalStorage()
     }
   }
-
-  // beforeDestroy: function () {
-  //   const newArticle = {
-  //     title: this.articleTitle,
-  //     teaserText: this.articleTeaserText,
-  //     articleContent: this.articleContent,
-  //     articleColor: this.articleColor
-  //   }
-  //   localStorage.setItem('localArticle', JSON.stringify(newArticle))
-  // }
 }
 </script>
 
