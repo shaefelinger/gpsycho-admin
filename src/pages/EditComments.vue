@@ -92,7 +92,7 @@ export default {
       }
     },
     async commentIsApproved (comment) {
-      console.log(comment.id)
+      // console.log(comment.id)
       try {
         await db
           .collection('comments')

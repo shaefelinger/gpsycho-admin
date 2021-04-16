@@ -159,7 +159,7 @@ export default {
         articleColor: this.articleColor
       }
       try {
-        await db.collection('Texte').add(newArticle)
+        await db.collection('texte').add(newArticle)
         this.$store.dispatch('firebaseStore/clearNewArticle')
         this.$q.notify({
           message: 'Text gespeichert',
