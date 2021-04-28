@@ -36,6 +36,7 @@
     </q-header>
 
     <q-drawer
+      v-if="loggedIn"
       v-model="leftDrawerOpen"
       show-if-above
       bordered
