@@ -1,7 +1,14 @@
 <template>
-  <div class="q-pa-md q-mx-auto" style="max-width: 800px">
+  <div
+    class="q-pa-md q-mx-auto"
+    style="max-width: 800px"
+  >
     <!-- {{ storeArticle.articleContent }} -->
-    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+    <q-form
+      @submit="onSubmit"
+      @reset="onReset"
+      class="q-gutter-md"
+    >
       <q-input
         ref="field1"
         outlined
@@ -62,8 +69,14 @@
         class="my-input"
       >
         <template v-slot:append>
-          <q-icon name="colorize" class="cursor-pointer">
-            <q-popup-proxy transition-show="scale" transition-hide="scale">
+          <q-icon
+            name="colorize"
+            class="cursor-pointer"
+          >
+            <q-popup-proxy
+              transition-show="scale"
+              transition-hide="scale"
+            >
               <q-color
                 v-model="articleColor"
                 default-view="palette"
@@ -81,7 +94,11 @@
         </template>
       </q-input>
       <div>
-        <q-btn label="Submit" type="submit" color="primary" />
+        <q-btn
+          label="Submit"
+          type="submit"
+          color="primary"
+        />
         <q-btn
           label="Reset"
           type="reset"
@@ -98,13 +115,17 @@
       <h5 class="text-subtitle2 ">{{ articleTitle }}</h5>
       <h5 class="text-weight-bold">{{ articleTeaserText }}</h5>
       <!-- <v-pre class="text-body2">{{ articleContent }}</v-pre> -->
-      <q-card-section v-html="articleContent" class="q-px-xs" sanitize="true" />
+      <q-card-section
+        v-html="articleContent"
+        class="q-px-xs"
+        sanitize="true"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import { db } from '../boot/firebaseBoot'
+import { db } from '../boot/firebase'
 import { LocalStorage } from 'quasar'
 
 export default {

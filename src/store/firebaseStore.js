@@ -1,5 +1,5 @@
 import { firestoreAction } from 'vuexfire'
-import { db } from '../boot/firebaseBoot'
+import { db } from '../boot/firebase'
 
 const namespaced = true
 

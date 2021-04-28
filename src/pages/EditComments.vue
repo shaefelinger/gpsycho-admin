@@ -7,7 +7,10 @@
       v-for="comment in comments"
       :key="comment.createtAt"
     >
-      <q-list bordered padding>
+      <q-list
+        bordered
+        padding
+      >
 
         <!-- <CommentLayout :comment="comment" @deleteCommentEmit="deleteComment"/> -->
         <q-item>
@@ -15,7 +18,10 @@
             <q-item-label class="q-mb-md">
               {{ comment.reference }}
             </q-item-label>
-            <q-item-label overline class="text-grey-8">
+            <q-item-label
+              overline
+              class="text-grey-8"
+            >
               <div>
                 {{
                   comment.createdAt.toDate().toLocaleDateString("de", {
@@ -37,7 +43,10 @@
             <q-item-label>{{ comment.comment }}</q-item-label>
           </q-item-section>
 
-          <q-item-section side top>
+          <q-item-section
+            side
+            top
+          >
             <q-item-label caption>
               {{ comment.email }}
             </q-item-label>
@@ -65,7 +74,7 @@
 </template>
 
 <script>
-import { db } from '../boot/firebaseBoot'
+import { db } from '../boot/firebase'
 // import CommentLayout from 'components/CommentLayout.vue'
 
 export default {
@@ -88,7 +97,7 @@ export default {
             .collection('comments')
             .doc(comment.id)
             .delete()
-        } catch (error) {}
+        } catch (error) { }
       }
     },
     async commentIsApproved (comment) {
@@ -98,7 +107,7 @@ export default {
           .collection('comments')
           .doc(comment.id)
           .update({ approved: true })
-      } catch (error) {}
+      } catch (error) { }
     }
   },
   computed: {
