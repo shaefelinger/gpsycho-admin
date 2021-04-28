@@ -3,6 +3,7 @@ import Vue from 'vue'
 
 import firebase from 'firebase'
 import 'firebase/firestore'
+import 'firebase/auth'
 
 import { firestorePlugin } from 'vuefire'
 
@@ -18,18 +19,16 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig).firestore()
 
+const firebaseAuth = firebase.auth()
+export { firebaseAuth }
+
 export const db = firebase.firestore()
 
 const timestamp = firebase.firestore.FieldValue.serverTimestamp
 export { timestamp }
 
-// "async" is optional;
-// more info on params: https://quasar.dev/quasar-cli/boot-files
-// export default async (/* { app, router, Vue ... } */) => {
-// }
-
 Vue.use(firestorePlugin)
 
-export default function (Vue) {
-  // Set default layout as a global component
-}
+// export default function (Vue) {
+//   // Set default layout as a global component
+// }
