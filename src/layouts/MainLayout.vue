@@ -28,7 +28,7 @@
           v-else
           @click="logoutUser"
           flat
-          icon-right="account_circle"
+          icon-right="logout"
           label="Logout"
           class="absolute-right"
         />

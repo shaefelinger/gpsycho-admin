@@ -1,6 +1,5 @@
 <template>
   <form @submit.prevent="submitForm">
-    <p>test</p>
     <div class="row q-mb-md">
       <q-banner class="bg-grey-3 col">
         <template v-slot:avatar>
@@ -9,6 +8,7 @@
             color="primary"
           />
         </template>
+        {{ tab | titleCase }}
       </q-banner>
     </div>
     <div class="row q-mb-md">
