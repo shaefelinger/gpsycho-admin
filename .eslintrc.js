@@ -56,6 +56,9 @@ module.exports = {
     "arrow-parens": "off",
     "one-var": "off",
 
+    "no-unused-vars": "warn",
+    "no-empty-pattern": "warn",
+
     "import/first": "off",
     "import/named": "error",
     "import/namespace": "error",

@@ -9,8 +9,16 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '/kommentare', component: () => import('pages/EditComments.vue') },
-      { path: '/newtext', component: () => import('pages/NewText.vue') }
+      {
+        path: '/kommentare',
+        component: () => import('pages/EditComments.vue')
+      },
+      { path: '/newtext', component: () => import('pages/NewText.vue') },
+      {
+        path: '/auth',
+        component: () => import('pages/PageAuth.vue')
+      }
+
     ]
   },
 

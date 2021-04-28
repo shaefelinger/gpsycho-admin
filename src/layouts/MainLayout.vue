@@ -16,7 +16,22 @@
           <span class="text-weight-light">Admin</span>
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <q-btn
+          v-if="!loggedIn"
+          to="/auth"
+          flat
+          icon-right="account_circle"
+          label="Login"
+          class="absolute-right"
+        />
+        <q-btn
+          v-else
+          @click="logoutUser"
+          flat
+          icon-right="account_circle"
+          label="Logout"
+          class="absolute-right"
+        />
       </q-toolbar>
     </q-header>
 
@@ -37,25 +52,43 @@
         />
       </q-list> -->
 
-      <q-item-label header class="text-grey-8"> Menü </q-item-label>
+      <q-item-label
+        header
+        class="text-grey-8"
+      > Menü </q-item-label>
 
       <q-list padding>
 
-        <q-item clickable to="/" exact v-ripple>
+        <q-item
+          clickable
+          to="/"
+          exact
+          v-ripple
+        >
           <q-item-section avatar>
             <q-icon name="flutter_dash" />
           </q-item-section>
           <q-item-section>Home</q-item-section>
         </q-item>
 
-        <q-item clickable to="/kommentare" exact v-ripple>
+        <q-item
+          clickable
+          to="/kommentare"
+          exact
+          v-ripple
+        >
           <q-item-section avatar>
             <q-icon name="grading" />
           </q-item-section>
           <q-item-section>Kommentare</q-item-section>
         </q-item>
 
-        <q-item clickable to="/newtext" exact v-ripple>
+        <q-item
+          clickable
+          to="/newtext"
+          exact
+          v-ripple
+        >
           <q-item-section avatar>
             <q-icon name="grading" />
           </q-item-section>
@@ -72,53 +105,7 @@
 </template>
 
 <script>
-
-// import EssentialLink from 'components/EssentialLink.vue'
-
-// const linksData = [
-//   {
-//     title: 'Home',
-//     caption: 'quasar.dev',
-//     icon: 'school',
-//     link: '#'
-//   },
-//   {
-//     title: 'Kommentare editieren',
-//     caption: 'github.com/quasarframework',
-//     icon: 'code',
-//     link: '/#/kommentare'
-//   },
-//   {
-//     title: 'Discord Chat Channel',
-//     caption: 'chat.quasar.dev',
-//     icon: 'chat',
-//     link: 'https://chat.quasar.dev'
-//   },
-//   {
-//     title: 'Forum',
-//     caption: 'forum.quasar.dev',
-//     icon: 'record_voice_over',
-//     link: 'https://forum.quasar.dev'
-//   },
-//   {
-//     title: 'Twitter',
-//     caption: '@quasarframework',
-//     icon: 'rss_feed',
-//     link: 'https://twitter.quasar.dev'
-//   },
-//   {
-//     title: 'Facebook',
-//     caption: '@QuasarFramework',
-//     icon: 'public',
-//     link: 'https://facebook.quasar.dev'
-//   },
-//   {
-//     title: 'Quasar Awesome',
-//     caption: 'Community Quasar projects',
-//     icon: 'favorite',
-//     link: 'https://awesome.quasar.dev'
-//   }
-// ]
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: 'MainLayout',
@@ -128,6 +115,12 @@ export default {
       leftDrawerOpen: false
       // essentialLinks: linksData
     }
+  },
+  computed: {
+    ...mapState('auth', ['loggedIn'])
+  },
+  methods: {
+    ...mapActions('auth', ['logoutUser'])
   }
 }
 </script>
