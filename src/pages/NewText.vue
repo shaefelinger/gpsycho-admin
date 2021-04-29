@@ -1,14 +1,7 @@
 <template>
-  <div
-    class="q-pa-md q-mx-auto"
-    style="max-width: 800px"
-  >
+  <div class="q-pa-md q-mx-auto" style="max-width: 800px">
     <!-- {{ storeArticle.articleContent }} -->
-    <q-form
-      @submit="onSubmit"
-      @reset="onReset"
-      class="q-gutter-md"
-    >
+    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
       <q-input
         ref="field1"
         outlined
@@ -27,7 +20,7 @@
         label="Teaser-Text"
         hint="Teaser-Text"
         type="textarea"
-        class="text-subtitle1 text-weight-bold "
+        class="text-subtitle1 text-weight-bold"
         bg-color="grey-1"
         autogrow
         lazy-rules
@@ -46,7 +39,7 @@
         autogrow
         class="text-body1 "
         :rules="[val => (val && val.length > 0) || 'Das Feld ist leer!']"
-      /> -->
+      />-->
 
       <q-editor
         v-model="articleContent"
@@ -69,14 +62,8 @@
         class="my-input"
       >
         <template v-slot:append>
-          <q-icon
-            name="colorize"
-            class="cursor-pointer"
-          >
-            <q-popup-proxy
-              transition-show="scale"
-              transition-hide="scale"
-            >
+          <q-icon name="colorize" class="cursor-pointer">
+            <q-popup-proxy transition-show="scale" transition-hide="scale">
               <q-color
                 v-model="articleColor"
                 default-view="palette"
@@ -97,29 +84,15 @@
         <q-btn
           label="Submit"
           type="submit"
-          color="primary"
-        />
-        <q-btn
-          label="Reset"
-          type="reset"
-          color="primary"
-          flat
-          class="q-ml-sm"
-        />
+          color="primary" />
+        <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
       </div>
     </q-form>
-    <div
-      :style="`background-color: ${articleColor};`"
-      class="q-py-lg q-px-xl q-mt-lg"
-    >
-      <h5 class="text-subtitle2 ">{{ articleTitle }}</h5>
+    <div :style="`background-color: ${articleColor};`" class="q-py-lg q-px-xl q-mt-lg">
+      <h5 class="text-subtitle2">{{ articleTitle }}</h5>
       <h5 class="text-weight-bold">{{ articleTeaserText }}</h5>
       <!-- <v-pre class="text-body2">{{ articleContent }}</v-pre> -->
-      <q-card-section
-        v-html="articleContent"
-        class="q-px-xs"
-        sanitize="true"
-      />
+      <q-card-section v-html="articleContent" class="q-px-xs" sanitize="true" />
     </div>
   </div>
 </template>
@@ -222,7 +195,8 @@ export default {
   //   }
   // },
   mounted () {
-    const newArticle = LocalStorage.getItem('localArticle') || this.resetFields()
+    const newArticle =
+      LocalStorage.getItem('localArticle') || this.resetFields()
     this.articleTitle = newArticle.articleTitle
     this.articleTeaserText = newArticle.articleTeaserText
     this.articleContent = newArticle.articleContent

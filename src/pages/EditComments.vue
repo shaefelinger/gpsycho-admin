@@ -1,6 +1,5 @@
 <template>
-  <div class="q-pa-md  row items-start q-gutter-md">
-
+  <div class="q-pa-md row items-start q-gutter-md">
     <div
       class="q-pa-md"
       style="width: 550px"
@@ -11,31 +10,28 @@
         bordered
         padding
       >
-
         <!-- <CommentLayout :comment="comment" @deleteCommentEmit="deleteComment"/> -->
         <q-item>
           <q-item-section>
-            <q-item-label class="q-mb-md">
-              {{ comment.reference }}
-            </q-item-label>
+            <q-item-label class="q-mb-md">{{ comment.reference }}</q-item-label>
             <q-item-label
-              overline
               class="text-grey-8"
+              overline
             >
               <div>
                 {{
-                  comment.createdAt.toDate().toLocaleDateString("de", {
-                    weekday: "long",
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric"
-                  })
+                comment.createdAt.toDate().toLocaleDateString("de", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+                })
                 }}
                 {{
-                  comment.createdAt.toDate().toLocaleTimeString(["de"], {
-                    hour: "2-digit",
-                    minute: "2-digit"
-                  })
+                comment.createdAt.toDate().toLocaleTimeString(["de"], {
+                hour: "2-digit",
+                minute: "2-digit"
+                })
                 }}
               </div>
             </q-item-label>
@@ -47,16 +43,14 @@
             side
             top
           >
-            <q-item-label caption>
-              {{ comment.email }}
-            </q-item-label>
+            <q-item-label caption>{{ comment.email }}</q-item-label>
             <div class="q-mt-lg">
               <q-btn
+                @click="deleteComment(comment)"
                 color="negative"
+                icon="delete"
                 outline
                 unelevated
-                icon="delete"
-                @click="deleteComment(comment)"
               />
               <q-btn
                 unelevated
@@ -67,7 +61,6 @@
             </div>
           </q-item-section>
         </q-item>
-
       </q-list>
     </div>
   </div>
@@ -112,12 +105,12 @@ export default {
   },
   computed: {
     unapprovedComments () {
-      return this.comments.filter((element) => {
+      return this.comments.filter(element => {
         return element.approved === false
       })
     },
     approvedComments () {
-      return this.comments.filter((element) => {
+      return this.comments.filter(element => {
         return element.approved === true
       })
     }

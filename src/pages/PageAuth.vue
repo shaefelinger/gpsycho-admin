@@ -17,7 +17,7 @@
         <!-- <q-tab
           name="register"
           label="Register"
-        /> -->
+        />-->
       </q-tabs>
 
       <q-separator />
@@ -26,14 +26,13 @@
         v-model="tab"
         animated
       >
-
         <q-tab-panel name="login">
           <LoginRegister :tab="tab" />
         </q-tab-panel>
 
         <!-- <q-tab-panel name="register">
           <LoginRegister :tab="tab" />
-        </q-tab-panel> -->
+        </q-tab-panel>-->
       </q-tab-panels>
     </q-card>
   </q-page>
